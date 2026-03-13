@@ -31,44 +31,48 @@ const PostCard = ({ post, onDelete }) => {
                 scale: 2, 
                 logging: false,
                 onclone: (clonedDoc) => {
-                    // 1. Critical Fix: Strip oklch references from all style tags in the clone
-                    // html2canvas crashes when it encounters oklch() color functions
-                    const styles = clonedDoc.getElementsByTagName('style');
-                    for (let s of styles) {
-                        s.innerHTML = s.innerHTML.replace(/oklch\([^)]+\)/g, '#a855f7');
+                    // 1. Aggressive Color Fix: html2canvas crashes on oklch()
+                    // Replaces all occurrences in the document to prevent parsing errors
+                    const clonedHtml = clonedDoc.documentElement.innerHTML;
+                    if (clonedHtml.includes('oklch')) {
+                        clonedDoc.documentElement.innerHTML = clonedHtml.replace(/oklch\([^)]+\)/g, '#a855f7');
                     }
 
                     // 2. Hide the action menu
                     const menu = clonedDoc.querySelector('[data-export-hide]');
                     if (menu) menu.style.display = 'none';
                     
-                    // 3. Reset transforms and force visibility
+                    // 3. Force full content visibility
                     const card = clonedDoc.getElementById(`post-card-${post._id}`);
                     if (card) {
                         card.style.transform = 'none';
                         card.style.margin = '0';
-                        card.style.backgroundColor = '#16141c'; // Force hex background
-                        card.style.borderColor = '#221f2b'; // Force hex border
-                        
-                        // Force full text display
+                        card.style.backgroundColor = '#16141c';
+                        card.style.borderColor = '#221f2b';
+                        card.style.height = 'auto';
+                        card.style.maxHeight = 'none';
+                        card.style.display = 'block';
+                        card.style.overflow = 'visible';
+
+                        // Ensure all text is visible (remove clamping)
                         const p = card.querySelector('p');
                         if (p) {
                             p.style.display = 'block';
                             p.style.webkitLineClamp = 'unset';
-                            p.style.color = '#94a3b8'; // Force hex text color
+                            p.style.overflow = 'visible';
+                            p.style.height = 'auto';
+                            p.style.color = '#94a3b8';
                         }
 
                         const h3 = card.querySelector('h3');
                         if (h3) {
-                            h3.style.color = '#ffffff'; // Force hex title color
-                            h3.style.whiteSpace = 'normal'; // Allow title to wrap
-                            h3.style.webkitLineClamp = 'unset';
                             h3.style.display = 'block';
+                            h3.style.webkitLineClamp = 'unset';
+                            h3.style.overflow = 'visible';
+                            h3.style.height = 'auto';
+                            h3.style.whiteSpace = 'normal';
+                            h3.style.color = '#ffffff';
                         }
-
-                        // Ensure enough vertical space
-                        card.style.height = 'auto';
-                        card.style.maxHeight = 'none';
                     }
                 }
             };
