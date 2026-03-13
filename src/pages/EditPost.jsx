@@ -23,7 +23,9 @@ const EditPost = () => {
     useEffect(() => {
         const fetchPost = async () => {
             try {
-                const response = await axios.get(`${API_URL}/api/posts`);
+                const response = await axios.get(`${API_URL}/api/posts`, {
+                    headers: { 'Authorization': `Bearer ${user.token}` }
+                });
                 const post = response.data.find(p => p._id === id);
                 if (post) {
                     setTitle(post.title);
