@@ -1,5 +1,12 @@
 # UrNotes - Full Stack Post Management System
 
+<img width="1919" height="975" alt="Screenshot 2026-03-13 125811" src="https://github.com/user-attachments/assets/e2bd0eb9-4d2b-445f-a7e4-1f7dffb13da7" />
+<img width="1919" height="949" alt="Screenshot 2026-03-13 125823" src="https://github.com/user-attachments/assets/92c8e7df-3441-43c0-ac47-e0674d619607" />
+<img width="1923" height="954" alt="Screenshot 2026-03-13 125835" src="https://github.com/user-attachments/assets/3e2e4268-379c-45e7-a39c-89b97b2fb37b" />
+<img width="1923" height="970" alt="Screenshot 2026-03-13 125506" src="https://github.com/user-attachments/assets/db693f8e-9fc4-4acf-b715-7f4f282ee7d7" />
+<img width="1923" height="1016" alt="Screenshot 2026-03-13 114011" src="https://github.com/user-attachments/assets/cf53f79b-fd2b-467a-bf39-b0e30def0e20" />
+
+
 UrNotes is a premium, futuristic post management application built with a modern tech stack. It features a sleek "Silk Dark" UI, secure user authentication, and real-time data management.
 
 ## 🚀 Tech Stack
