@@ -1,0 +1,147 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-jakarta: "Plus Jakarta Sans", sans-serif;
+  --font-outfit: "Outfit", sans-serif;
+  
+  /* Critical: Define base colors as HEX to prevent Tailwind v4 from defaulting to oklch() */
+  --color-purple-500: #a855f7;
+  --color-purple-600: #9333ea;
+  --color-indigo-400: #818cf8;
+  --color-indigo-500: #6366f1;
+  --color-slate-400: #94a3b8;
+  --color-slate-500: #64748b;
+  --color-slate-600: #475569;
+  --color-red-500: #ef4444;
+  --color-emerald-400: #34d399;
+  --color-amber-400: #fbbf24;
+}
+
+/* Global utility overrides for html2canvas compatibility */
+.text-\[\#a855f7\] { color: #a855f7 !important; }
+.bg-\[\#a855f7\] { background-color: #a855f7 !important; }
+.border-\[\#221f2b\] { border-color: #221f2b !important; }
+.bg-\[\#16141c\] { background-color: #16141c !important; }
+.bg-\[\#0b0a0f\] { background-color: #0b0a0f !important; }
+
+:root {
+  /* Silk Dark Palette - Explicit HEX */
+  --bg-main: #0b0a0f;
+  --bg-card: #16141c;
+  --border-silk: #221f2b;
+  --primary-silk: #a855f7;
+  --primary-muted: #6b21a8;
+  --text-main: #ffffff;
+  --text-muted: #a19fb1;
+  --accent-silk: #1e1b26;
+}
+
+html, body {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #0b0a0f; /* Explicit HEX */
+  color: #ffffff;
+  font-family: var(--font-jakarta);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+button {
+  cursor: pointer;
+}
+
+.font-outfit {
+  font-family: var(--font-outfit);
+}
+
+.glass-silk {
+  background: rgba(11, 10, 15, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Premium Silk Card */
+.silk-card {
+  background-color: #16141c;
+  border: 1px solid #221f2b;
+  border-radius: 24px;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0b0a0f;
+}
+::-webkit-scrollbar-thumb {
+  background: #221f2b;
+  border-radius: 10px;
+}
+
+/* Custom Calendar Styles (React Day Picker) */
+.rdp {
+  --rdp-cell-size: 40px;
+  --rdp-accent-color: #a855f7;
+  --rdp-background-color: #16141c;
+  --rdp-accent-color-foreground: #ffffff;
+  margin: 0;
+}
+
+.rdp-day_selected, 
+.rdp-day_selected:focus-visible, 
+.rdp-day_selected:hover {
+  background-color: var(--rdp-accent-color) !important;
+  color: var(--rdp-accent-color-foreground) !important;
+  border-radius: 12px;
+}
+
+.rdp-button:hover:not([disabled]):not(.rdp-day_selected) {
+  background-color: #221f2b !important;
+  border-radius: 12px;
+}
+
+.rdp-head_cell {
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #64748b;
+  padding-bottom: 15px;
+}
+
+.rdp-nav_button {
+  background-color: #0b0a0f !important;
+  border: 1px solid #221f2b !important;
+  border-radius: 10px !important;
+  color: #a19fb1 !important;
+}
+
+.rdp-caption_label {
+  font-family: var(--font-outfit);
+  font-weight: 800;
+  text-transform: uppercase;
+  font-style: italic;
+  font-size: 14px;
+}
+
+/* Input Styles */
+input, textarea {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+input:focus, textarea:focus {
+  border-color: #a855f7 !important;
+  background-color: rgba(255, 255, 255, 0.05) !important;
+}
