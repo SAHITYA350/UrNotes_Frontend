@@ -175,7 +175,7 @@ const Navbar = () => {
                                                 onClick={() => setIsOpen(false)}
                                                 className="flex items-center justify-center gap-3 w-full py-4 rounded-2xl bg-white text-black font-black uppercase tracking-widest text-xs hover:bg-[#a855f7] hover:text-white transition-all"
                                             >
-                                                <span>Initialize Account</span>
+                                            <span>Sign Up</span>
                                             </Link>
                                         </div>
                                     ) : (

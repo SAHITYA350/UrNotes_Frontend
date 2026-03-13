@@ -38,7 +38,7 @@ const Signup = () => {
                     <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#16141c] border border-[#221f2b] text-[10px] font-bold uppercase tracking-widest text-[#a855f7] mb-2">
                         <UserPlus size={12} /> Create Account
                     </div>
-                    <h2 className="text-5xl font-black tracking-tight text-white font-outfit uppercase italic">
+                    <h2 className="text-4xl md:text-5xl font-black tracking-tight text-white font-outfit uppercase italic">
                         Sign <span className="text-[#a855f7]">Up</span>
                     </h2>
                     <p className="text-sm font-medium text-slate-500 uppercase tracking-widest">
@@ -46,7 +46,7 @@ const Signup = () => {
                     </p>
                 </div>
 
-                <div className="rounded-[2.5rem] border border-[#221f2b] bg-[#16141c] p-10 shadow-2xl relative overflow-hidden">
+                <div className="rounded-3xl md:rounded-[2.5rem] border border-[#221f2b] bg-[#16141c] p-6 md:p-10 shadow-2xl relative overflow-hidden">
                     <form className="space-y-6 relative z-10" onSubmit={handleSubmit}>
                         <div className="space-y-4">
                             <div>

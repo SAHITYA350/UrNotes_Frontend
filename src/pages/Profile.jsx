@@ -27,13 +27,12 @@ const Profile = () => {
     useEffect(() => {
         const fetchUserPosts = async () => {
             try {
-                const response = await axios.get(`${API_URL}/api/posts`);
-                // Support both populated and unpopulated author field
-                const filtered = response.data.filter(post => {
-                    const authorId = post.author?._id || post.author;
-                    return authorId === user?._id;
+                const response = await axios.get(`${API_URL}/api/posts`, {
+                    headers: {
+                        'Authorization': `Bearer ${user.token}`
+                    }
                 });
-                setUserPosts(filtered);
+                setUserPosts(response.data);
             } catch (error) {
                 console.error("Error fetching user posts:", error);
             } finally {
@@ -141,7 +140,7 @@ const Profile = () => {
                         <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.3em] text-[#a855f7]">
                             <LayoutDashboard size={14} /> System Analytics Dashboard
                         </div>
-                        <h1 className="text-5xl lg:text-7xl font-black font-outfit uppercase italic tracking-tighter">
+                        <h1 className="text-4xl md:text-5xl lg:text-7xl font-black font-outfit uppercase italic tracking-tighter">
                             Control <span className="text-[#a855f7]">Panel</span>
                         </h1>
                     </div>
@@ -151,7 +150,7 @@ const Profile = () => {
                     
                     {/* Left Column: Profile Card & System Stats */}
                     <div className="lg:col-span-4 space-y-8">
-                        <div className="p-10 rounded-[2.5rem] bg-[#16141c] border border-[#221f2b] flex flex-col items-center text-center shadow-2xl relative overflow-hidden group">
+                        <div className="p-6 md:p-10 rounded-[2rem] md:rounded-[2.5rem] bg-[#16141c] border border-[#221f2b] flex flex-col items-center text-center shadow-2xl relative overflow-hidden group">
                            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#a855f7]/50 to-transparent" />
                             
                             <div className="relative mb-8">

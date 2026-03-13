@@ -21,6 +21,9 @@ const PostCard = ({ post, onDelete }) => {
         try {
             toast.loading("Generating high-res capture...", { id: "export" });
             
+            // Wait for any animations or images to settle
+            await new Promise(resolve => setTimeout(resolve, 500));
+
             const options = {
                 useCORS: true,
                 allowTaint: false, // Ensure we don't taint the canvas
@@ -58,7 +61,14 @@ const PostCard = ({ post, onDelete }) => {
                         const h3 = card.querySelector('h3');
                         if (h3) {
                             h3.style.color = '#ffffff'; // Force hex title color
+                            h3.style.whiteSpace = 'normal'; // Allow title to wrap
+                            h3.style.webkitLineClamp = 'unset';
+                            h3.style.display = 'block';
                         }
+
+                        // Ensure enough vertical space
+                        card.style.height = 'auto';
+                        card.style.maxHeight = 'none';
                     }
                 }
             };
@@ -140,10 +150,10 @@ const PostCard = ({ post, onDelete }) => {
                         <div className="flex flex-col gap-2 p-2 rounded-[1.5rem] bg-[#0b0a0f]/90 backdrop-blur-xl border border-[#221f2b] shadow-2xl">
                             <button 
                                 onClick={exportAsPNG}
-                                className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#a855f7] text-white hover:bg-white hover:text-[#a855f7] transition-all active:scale-90 shadow-lg shadow-[#a855f7]/20"
+                                className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#a855f7] text-white hover:bg-[#b066ff] transition-all active:scale-90 shadow-lg shadow-[#a855f7]/20"
                                 title="Download PNG"
                             >
-                                <Download size={22} />
+                                <Download size={22} className="text-white" />
                             </button>
                             
                             {isAuthor && (
@@ -158,9 +168,9 @@ const PostCard = ({ post, onDelete }) => {
                                     </button>
                                     <button 
                                         onClick={async (e) => {
-                                            if (window.confirm('Erase this record form binary?')) {
+                                            if (window.confirm('Erase this record from binary?')) {
                                                 try {
-                                                    await axios.delete(`http://localhost:3000/api/posts/${post._id}`, {
+                                                    await axios.delete(`${import.meta.env.VITE_API_URL}/api/posts/${post._id}`, {
                                                         headers: { Authorization: `Bearer ${user.token}` }
                                                     });
                                                     toast.success('Record purged');

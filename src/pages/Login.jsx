@@ -41,7 +41,7 @@ const Login = () => {
                     >
                         <Sparkles size={12} /> Secure Authentication Portal
                     </motion.div>
-                    <h2 className="text-5xl font-black tracking-tight text-white font-outfit uppercase italic">
+                    <h2 className="text-4xl md:text-5xl font-black tracking-tight text-white font-outfit uppercase italic">
                         Login
                     </h2>
                     <p className="text-sm font-medium text-slate-500 uppercase tracking-widest">
@@ -49,7 +49,7 @@ const Login = () => {
                     </p>
                 </div>
 
-                <div className="rounded-[2.5rem] border border-[#221f2b] bg-[#16141c] p-10 shadow-2xl relative overflow-hidden">
+                <div className="rounded-3xl md:rounded-[2.5rem] border border-[#221f2b] bg-[#16141c] p-6 md:p-10 shadow-2xl relative overflow-hidden">
                     <form className="space-y-6 relative z-10" onSubmit={handleSubmit}>
                         <div className="space-y-5">
                             <div>

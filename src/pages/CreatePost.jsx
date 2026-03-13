@@ -68,7 +68,7 @@ const CreatePost = () => {
                         <FileStack size={28} />
                     </div>
                     <div>
-                        <h1 className="text-4xl font-black font-outfit text-white uppercase italic tracking-tight">
+                        <h1 className="text-3xl md:text-4xl font-black font-outfit text-white uppercase italic tracking-tight">
                             Initialize <span className="text-[#a855f7]">New Entry</span>
                         </h1>
                         <p className="text-slate-500 font-medium mt-1">Populate the system archive with new validated data.</p>
@@ -83,7 +83,7 @@ const CreatePost = () => {
                     {/* Form Section */}
                     <div className="lg:col-span-7">
                         <form onSubmit={handleSubmit} className="space-y-6">
-                            <div className="p-10 rounded-[2.5rem] bg-[#16141c] border border-[#221f2b] shadow-2xl space-y-8">
+                            <div className="p-6 md:p-10 rounded-3xl md:rounded-[2.5rem] bg-[#16141c] border border-[#221f2b] shadow-2xl space-y-8">
                                 <div>
                                     <label className="block text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500 mb-3 ml-1">Archive Title</label>
                                     <input 

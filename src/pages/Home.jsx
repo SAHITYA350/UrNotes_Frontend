@@ -12,7 +12,12 @@ import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 import { format, isSameDay } from 'date-fns';
 
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+
 const Home = () => {
+    const { user } = useAuth();
+    const navigate = useNavigate();
     const [posts, setPosts] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [loading, setLoading] = useState(true);
@@ -22,9 +27,19 @@ const Home = () => {
     const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 
     useEffect(() => {
+        if (!user || !user.token) {
+            logout(); // Clear invalid session
+            navigate('/login');
+            return;
+        }
+
         const fetchPosts = async () => {
             try {
-                const response = await axios.get(`${API_URL}/api/posts`);
+                const response = await axios.get(`${API_URL}/api/posts`, {
+                    headers: {
+                        'Authorization': `Bearer ${user.token}`
+                    }
+                });
                 setPosts(response.data);
             } catch (error) {
                 console.error("Error fetching posts:", error);
@@ -33,7 +48,7 @@ const Home = () => {
             }
         };
         fetchPosts();
-    }, []);
+    }, [user, navigate]);
 
     const filterByTime = (posts) => {
         const now = new Date();
@@ -103,79 +118,77 @@ const Home = () => {
 
     return (
         <div className="min-h-screen bg-[#0b0a0f] pb-20 w-full overflow-x-hidden">
-            {/* Hero Section */}
-            <div className="relative pt-12 pb-24 px-6">
-                <div className="absolute top-0 left-0 w-full h-[600px] bg-[#a855f7]/[0.01] pointer-events-none" />
+            {/* System Header Section */}
+            <div className="relative pt-12 pb-16 px-6">
+                <div className="absolute top-0 left-0 w-full h-[400px] bg-[#a855f7]/[0.02] pointer-events-none" />
                 
-                <div className="max-w-5xl mx-auto text-center space-y-12 relative z-10">
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#16141c] border border-[#221f2b] text-[10px] font-bold uppercase tracking-[0.2em] text-[#a855f7]"
-                    >
-                        <Sparkles size={12} /> Synchronized System Access
-                    </motion.div>
-                    
-                    <div className="space-y-4">
-                        <motion.h1 
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            className="text-6xl md:text-8xl font-black font-outfit text-white uppercase italic tracking-tighter leading-[0.9]"
-                        >
-                            Global <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#a855f7] to-indigo-500">Archive</span>
-                        </motion.h1>
-                        <motion.p 
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.1 }}
-                            className="max-w-2xl mx-auto text-slate-500 text-lg font-medium leading-relaxed"
-                        >
-                            Access and manage secure data record entries within the UrNotes global leveling system.
-                        </motion.p>
-                    </div>
-
-                    {/* Premium Search & Time Filter Container */}
+                <div className="max-w-7xl mx-auto px-6">
                     <motion.div 
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.2, type: 'spring', damping: 20 }}
-                        className="max-w-5xl mx-auto"
+                        className="rounded-3xl md:rounded-[3rem] bg-[#16141c] border border-[#221f2b] p-6 md:p-10 shadow-3xl"
                     >
-                        <div className="flex flex-col gap-4 p-4 rounded-[3rem] bg-[#16141c] border border-[#221f2b] shadow-2xl relative">
-                            <div className="flex flex-col lg:flex-row gap-3">
+                        <div className="flex flex-col gap-6 md:gap-10">
+                            <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+                                <div className="space-y-2">
+                                    <div className="flex items-center gap-2 text-[10px] font-bold text-[#a855f7] uppercase tracking-[0.3em]">
+                                        <Sparkles size={14} /> Global Stream Access
+                                    </div>
+                                    <h2 className="text-3xl md:text-5xl font-black font-outfit text-white uppercase italic tracking-tighter">
+                                        System <span className="text-[#a855f7]">Archive</span>
+                                    </h2>
+                                    <p className="text-slate-500 text-xs font-bold uppercase tracking-widest">
+                                        Managing {filteredPosts.length} secured data entries
+                                    </p>
+                                </div>
+                                <div className="flex items-center gap-3">
+                                    <button 
+                                        className="h-12 w-12 rounded-2xl bg-[#0b0a0f] border border-[#221f2b] flex items-center justify-center text-slate-500 hover:text-white hover:border-[#a855f7]/50 transition-all shadow-xl"
+                                        title="System Refresh"
+                                        onClick={() => window.location.reload()}
+                                    >
+                                        <Sparkles size={18} />
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div className="flex flex-col md:flex-row items-stretch gap-4">
                                 {/* Calendar Selection Button */}
                                 <div className="flex-1 lg:flex-none relative">
                                     <button 
                                         onClick={() => { setIsCalendarOpen(!isCalendarOpen); setIsFilterOpen(false); }}
-                                        className={`w-full lg:w-auto h-full px-8 py-5 rounded-3xl border flex items-center gap-4 transition-all min-w-[240px] justify-between group ${
+                                        className={`w-full h-full px-8 py-5 rounded-3xl border flex items-center gap-4 transition-all min-w-[240px] justify-between group ${
                                             selectedDate ? 'bg-[#a855f7] border-[#a855f7] text-white shadow-lg shadow-[#a855f7]/20' : 'bg-[#0b0a0f] border-[#221f2b] text-slate-400 hover:text-white hover:border-[#a855f7]/50'
                                         }`}
                                     >
                                         <div className="flex items-center gap-3 overflow-hidden">
                                             <CalendarIcon size={18} className={selectedDate ? 'text-white' : 'text-[#a855f7]'} />
                                             <span className="text-xs font-black uppercase tracking-[0.2em] truncate">
-                                                {selectedDate ? format(selectedDate, 'MMM dd, yyyy') : 'Pick Specific Date'}
+                                                {selectedDate ? format(selectedDate, 'MMM dd, yyyy') : 'Pick Date'}
                                             </span>
                                         </div>
-                                        {selectedDate ? (
-                                            <X size={14} className="hover:scale-125 transition-transform" onClick={(e) => { e.stopPropagation(); setSelectedDate(null); }} />
-                                        ) : (
-                                            <ChevronDown size={14} className={`transition-transform duration-300 ${isCalendarOpen ? 'rotate-180' : ''}`} />
-                                        )}
+                                        <ChevronDown size={14} className={`transition-transform duration-300 ${isCalendarOpen ? 'rotate-180' : ''}`} />
                                     </button>
-
+                                    
                                     <AnimatePresence>
                                         {isCalendarOpen && (
                                             <motion.div 
                                                 initial={{ opacity: 0, y: 15, scale: 0.95 }}
                                                 animate={{ opacity: 1, y: 0, scale: 1 }}
                                                 exit={{ opacity: 0, y: 15, scale: 0.95 }}
-                                                className="absolute top-full left-1/2 -translate-x-1/2 lg:translate-x-0 lg:left-0 mt-4 p-4 rounded-[2.5rem] bg-[#16141c] border border-[#221f2b] shadow-2xl z-50"
+                                                className="absolute top-full left-0 mt-4 p-4 rounded-[2rem] bg-[#16141c] border border-[#221f2b] shadow-2xl z-50"
                                             >
+                                                <style>{`
+                                                    .rdp { --rdp-accent-color: #a855f7; --rdp-background-color: #a855f7; color: white; margin: 0; }
+                                                    .rdp-day_selected { background-color: var(--rdp-accent-color) !important; color: white !important; }
+                                                `}</style>
                                                 <DayPicker
                                                     mode="single"
                                                     selected={selectedDate}
-                                                    onSelect={(date) => { setSelectedDate(date); setIsCalendarOpen(false); setTimeFilter('all'); }}
+                                                    onSelect={(date) => {
+                                                        setSelectedDate(date);
+                                                        setIsCalendarOpen(false);
+                                                    }}
                                                     className="m-0"
                                                 />
                                             </motion.div>
@@ -187,7 +200,7 @@ const Home = () => {
                                 <div className="flex-1 lg:flex-none relative">
                                     <button 
                                         onClick={() => { setIsFilterOpen(!isFilterOpen); setIsCalendarOpen(false); }}
-                                        className="w-full lg:w-auto h-full px-8 py-5 rounded-3xl bg-[#0b0a0f] border border-[#221f2b] text-slate-400 hover:text-white hover:border-[#a855f7]/50 flex items-center gap-4 transition-all min-w-[200px] justify-between group"
+                                        className="w-full h-full px-8 py-5 rounded-3xl bg-[#0b0a0f] border border-[#221f2b] text-slate-400 hover:text-white hover:border-[#a855f7]/50 flex items-center gap-4 transition-all min-w-[200px] justify-between group"
                                     >
                                         <div className="flex items-center gap-3">
                                             <SlidersHorizontal size={18} className="text-[#a855f7]" />
@@ -229,17 +242,17 @@ const Home = () => {
                                     </AnimatePresence>
                                 </div>
 
-                                {/* Compact Search Input (Replaces Initialize Button) */}
+                                {/* Compact Search Input */}
                                 <div className="flex-1 relative group">
                                     <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-[#a855f7] transition-all group-focus-within:scale-110" size={18} />
                                     <input 
                                         type="text"
                                         placeholder="SEARCH ARCHIVE..."
-                                        className="w-full bg-[#0b0a0f] border border-[#221f2b] rounded-3xl py-5 pl-14 pr-6 text-white text-[10px] font-black uppercase tracking-[0.3em] focus:outline-none focus:border-[#a855f7] transition-all placeholder-slate-800"
+                                        className="w-full h-full bg-[#0b0a0f] border border-[#221f2b] rounded-3xl py-5 pl-14 pr-6 text-white text-[10px] font-black uppercase tracking-[0.3em] focus:outline-none focus:border-[#a855f7] transition-all placeholder-slate-800"
                                         value={searchTerm}
                                         onChange={(e) => setSearchTerm(e.target.value)}
                                     />
-                                    <div className="absolute right-4 top-1/2 -translate-y-1/2 h-8 w-px bg-[#221f2b]" />
+                                    <div className="absolute right-4 top-1/2 -translate-y-1/2 h-8 w-px bg-[#221f2b] hidden md:block" />
                                 </div>
                             </div>
                         </div>
