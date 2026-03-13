@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+
+const API_URL = import.meta.env.VITE_API_URL;
 import PostCard from '../components/PostCard';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -22,7 +24,7 @@ const Home = () => {
     useEffect(() => {
         const fetchPosts = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/api/posts');
+                const response = await axios.get(`${API_URL}/api/posts`);
                 setPosts(response.data);
             } catch (error) {
                 console.error("Error fetching posts:", error);

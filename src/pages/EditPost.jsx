@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+
+const API_URL = import.meta.env.VITE_API_URL;
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { toast } from 'react-hot-toast';
@@ -21,7 +23,7 @@ const EditPost = () => {
     useEffect(() => {
         const fetchPost = async () => {
             try {
-                const response = await axios.get(`http://localhost:3000/api/posts`);
+                const response = await axios.get(`${API_URL}/api/posts`);
                 const post = response.data.find(p => p._id === id);
                 if (post) {
                     setTitle(post.title);
@@ -56,7 +58,7 @@ const EditPost = () => {
         if (image) formData.append('image', image);
 
         try {
-            await axios.put(`http://localhost:3000/api/posts/${id}`, formData, {
+            await axios.put(`${API_URL}/api/posts/${id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     'Authorization': `Bearer ${user.token}`

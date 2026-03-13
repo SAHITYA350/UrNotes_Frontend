@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+
+const API_URL = import.meta.env.VITE_API_URL;
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { toast } from 'react-hot-toast';
@@ -35,7 +37,7 @@ const CreatePost = () => {
         if (image) formData.append('image', image);
 
         try {
-            await axios.post('http://localhost:3000/api/posts', formData, {
+            await axios.post(`${API_URL}/api/posts`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     'Authorization': `Bearer ${user.token}`

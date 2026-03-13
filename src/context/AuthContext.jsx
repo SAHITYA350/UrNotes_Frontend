@@ -1,6 +1,8 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -16,21 +18,21 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     const login = async (email, password) => {
-        const response = await axios.post('http://localhost:3000/api/users/login', { email, password });
+        const response = await axios.post(`${API_URL}/api/users/login`, { email, password });
         setUser(response.data);
         localStorage.setItem('user', JSON.stringify(response.data));
         return response.data;
     };
 
     const register = async (username, email, password) => {
-        const response = await axios.post('http://localhost:3000/api/users/register', { username, email, password });
+        const response = await axios.post(`${API_URL}/api/users/register`, { username, email, password });
         setUser(response.data);
         localStorage.setItem('user', JSON.stringify(response.data));
         return response.data;
     };
 
     const updateProfile = async (formData) => {
-        const response = await axios.put('http://localhost:3000/api/users/profile', formData, {
+        const response = await axios.put(`${API_URL}/api/users/profile`, formData, {
             headers: {
                 'Authorization': `Bearer ${user.token}`,
                 'Content-Type': 'multipart/form-data'

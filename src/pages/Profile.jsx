@@ -9,6 +9,8 @@ import {
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+
+const API_URL = import.meta.env.VITE_API_URL;
 import PostCard from '../components/PostCard';
 import { startOfDay, startOfWeek, startOfMonth, startOfYear, isAfter, subDays, format, isSameDay } from 'date-fns';
 
@@ -25,7 +27,7 @@ const Profile = () => {
     useEffect(() => {
         const fetchUserPosts = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/api/posts');
+                const response = await axios.get(`${API_URL}/api/posts`);
                 // Support both populated and unpopulated author field
                 const filtered = response.data.filter(post => {
                     const authorId = post.author?._id || post.author;
